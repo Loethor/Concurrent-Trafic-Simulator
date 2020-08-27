@@ -79,6 +79,7 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
     // add new vehicle to the end of the waiting line
     std::promise<void> prmsVehicleAllowedToEnter;
     std::future<void> ftrVehicleAllowedToEnter = prmsVehicleAllowedToEnter.get_future();
+    
     _waitingVehicles.pushBack(vehicle, std::move(prmsVehicleAllowedToEnter));
 
     // wait until the vehicle is allowed to enter
@@ -86,7 +87,7 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
     
     
     lck.lock();
-    // FP.6b : use the methods TrafficLight::getCurrentPhase and TrafficLight::waitForGreen to block the execution until the traffic light turns green.
+    // FP.6b : use the method   s TrafficLight::getCurrentPhase and TrafficLight::waitForGreen to block the execution until the traffic light turns green.
 
     if(!trafficLightIsGreen()){
         _trafficLight.waitForGreen();
@@ -147,12 +148,12 @@ void Intersection::processVehicleQueue()
 bool Intersection::trafficLightIsGreen()
 {
    // please include this part once you have solved the final project tasks
-   /*
+   
    if (_trafficLight.getCurrentPhase() == TrafficLightPhase::green)
        return true;
    else
        return false;
-   */
 
-  return true; // makes traffic light permanently green
+
+//   return true; // makes traffic light permanently green
 } 

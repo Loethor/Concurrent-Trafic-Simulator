@@ -21,6 +21,10 @@ void MessageQueue<T>::send(T &&msg)
 {
     // FP.4a : The method send should use the mechanisms std::lock_guard<std::mutex> 
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
+    std::lock_guard<std::mutex> lock(_mutex);
+    _queue.emplace_back(msg);
+    _condition.notify_one();
+
 }
 
 
@@ -85,7 +89,14 @@ void TrafficLight::cycleThroughPhases()
             //if it was green, now is red
             _currentPhase = _currentPhase == red ? green : red;
 
-           ////
+            //send into queue
+            auto pushLights = std::async(std::launch::async, 
+                                    &MessageQueue<TrafficLightPhase>::send,
+                                    &_queue,
+                                    std::move(_currentPhase));
+            //synchronization
+            pushLights.wait();                        
+
 
             lastSwitchedTime = std::chrono::system_clock::now();
             cycleDuration = dist(gen);

@@ -62,7 +62,7 @@ public:
 
 private:
     // typical behaviour methods
-    TrafficLightPhase getCurrentPhase();
+    void cycleThroughPhases();
 
     std::condition_variable _condition;
     std::mutex _mutex;

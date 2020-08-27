@@ -19,6 +19,8 @@ template <class T>
 class MessageQueue
 {
 public:
+void send(T &&msg);
+T receive();
 
 private:
     
